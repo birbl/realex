@@ -12,9 +12,12 @@ module RealEx
                :authtimetaken, :batchid, :avsaddressresponse, :cardissuer,
                :authcode
     
+    attr_accessor :to_xml
+    
     def self.new_from_xml(xml)
       parsed_xml = xml.kind_of?(String) ? Nokogiri.XML(xml) : xml
       r = new
+      r.to_xml = xml.to_xml
       r.timestamp = (parsed_xml).at('response')['timestamp'] if (parsed_xml).at('response')
       r.result = (parsed_xml).at('result').inner_html if (parsed_xml).at('result')
       r.message = (parsed_xml).at('message').inner_html if (parsed_xml).at('message')
