@@ -29,6 +29,7 @@ module RealEx
         r.merchantid RealEx::Config.merchant_id
         r.autosettle :flag => autosettle? ? '1' : '0'
         r.orderid order_id
+        r.amount(amount, :currency => currency) if amount
         r.authcode authcode if authcode
         r.pasref pasref if pasref
         r.account RealEx::Config.account
@@ -47,7 +48,7 @@ module RealEx
     end
     
     def hash
-      RealEx::Client.build_hash([RealEx::Client.timestamp, RealEx::Config.merchant_id, order_id, '', '', ''])
+        RealEx::Client.build_hash([RealEx::Client.timestamp, RealEx::Config.merchant_id, order_id, (amount if amount), (currency if amount), ''])
     end
 
     def authorize!
